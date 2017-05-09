@@ -1,0 +1,8 @@
+---
+- name: Add route to cluster ip # http://stackoverflow.com/questions/39872332/how-to-fix-weave-net-crashloopbackoff-for-the-second-node
+  become: true
+  command: route add {{ hostvars[groups['kube-master'][0]]['clusterip'].stdout }} gw {{ kubernetes_master_ip }}
+
+- name: Join Kubernetes Cluster
+  become: true
+  shell: kubeadm join --token={{ kubeadm_token }} {{ kubernetes_master_ip }}:6443

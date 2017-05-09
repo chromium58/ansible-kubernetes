@@ -1,0 +1,31 @@
+---
+
+# Here we initialise the cluster with Kubeadm. We add the token manually so that we
+# know its value when we initialise our nodes. We add --api-advertise-addresses manually
+# because by default Kubeadm would choose the nat IP we get from Virtualbox, which is not good.
+- name: Check if cluster already initialized
+  stat:
+    path:
+      /etc/kubernetes/admin.conf
+  register: kubeconfig
+
+- name:    Initialise Kubernetes Cluster
+  become:  true
+  shell:   kubeadm init --token="{{ kubeadm_token }}" --apiserver-advertise-address="{{ kubernetes_master_ip }}"
+  when: kubeconfig.stat.exists == False
+
+# We install JQ for the next task
+- name:    Install JQ
+  become:  true
+  apt:
+    name:  jq
+    state: present
+
+- name: Get cluster ip # needed for node setup
+  shell: 'kubectl --kubeconfig /etc/kubernetes/admin.conf get services kubernetes -o json | jq -j ".spec.clusterIP"'
+  register: clusterip
+
+# Finally we install Weave Network for Kubernetes 
+- name:    Install Weave
+  become:  true
+  shell:   kubectl --kubeconfig /etc/kubernetes/admin.conf apply -f https://git.io/weave-kube-1.6
