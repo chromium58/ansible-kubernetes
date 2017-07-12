@@ -36,5 +36,5 @@
     dest:    "/etc/systemd/system/kubelet.service.d/10-kubeadm.conf"
   notify:
     - reload systemd
-
+  when: inventory_hostname != "kube-01"
 - meta: flush_handlers

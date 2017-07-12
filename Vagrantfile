@@ -16,6 +16,10 @@ Vagrant.configure(2) do |config|
       ip = "192.168.33.#{10*i}"
       config.vm.network :private_network, ip: ip
 
+      config.vm.provision :shell do |shell|
+        shell.inline = "sed 's/127\.0\.0\.1/192\.168\.33\.#{10*i}/' -i /etc/hosts"
+      end
+
       if i == 3
         config.vm.provision :ansible do |ansible|
           ansible.extra_vars = 'vars.yml'
