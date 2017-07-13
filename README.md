@@ -6,3 +6,8 @@ After some research i didnt found actually working guide to install kubernetes c
 This playbook will install kubernetes cluster in vagrant with one master and two nodes.
 
 Warning! Nodes will not work after reboot, because they need static route to kubernetes cluster ip via master node(which this playbook adds temporary in kubernetes-node role).
+
+### Tested on
+Vagrant 1.9.3
+
+Virtualbox 5.0.38
