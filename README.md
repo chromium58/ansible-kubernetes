@@ -7,6 +7,12 @@ This playbook will install kubernetes cluster in vagrant with one master and two
 
 Warning! Nodes will not work after reboot, because they need static route to kubernetes cluster ip via master node(which this playbook adds temporary in kubernetes-node role).
 
+### If you launch vagrant in bash for windows ( WSL )
+
+If you launch vagrant in bash for windows, you should disable uartmode in Vagrant settings:
+
+``` vb.customize ["modifyvm", :id, "--memory", "2048", "--uartmode1", "disconnected" ]```
+
 ### Tested on
 Vagrant 1.9.3
 
