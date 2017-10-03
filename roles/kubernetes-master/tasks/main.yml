@@ -11,7 +11,7 @@
 
 - name:    Initialise Kubernetes Cluster
   become:  true
-  shell:   kubeadm init --token="{{ kubeadm_token }}" --apiserver-advertise-address="{{ kubernetes_master_ip }}"
+  shell:   kubeadm init --token="{{ kubeadm_token }}" --apiserver-advertise-address="{{ kubernetes_master_ip }}" --skip-preflight-checks
   when: kubeconfig.stat.exists == False
 
 # We install JQ for the next task
